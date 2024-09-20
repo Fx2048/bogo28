@@ -1,9 +1,9 @@
-import openai
+from openai import OpenAI
 import streamlit as st
 
 st.title("ChatGPT-like clone")
 
-client = openai.OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-3.5-turbo"
@@ -21,8 +21,7 @@ if prompt := st.chat_input("What is up?"):
         st.markdown(prompt)
 
     with st.chat_message("assistant"):
-        response = ""
-        stream = client.ChatCompletion.create(
+        stream = client.chat.completions.create(
             model=st.session_state["openai_model"],
             messages=[
                 {"role": m["role"], "content": m["content"]}
@@ -30,7 +29,5 @@ if prompt := st.chat_input("What is up?"):
             ],
             stream=True,
         )
-        for chunk in stream:
-            response += chunk["choices"][0]["delta"]["content"]
-            st.markdown(response)
+        response = st.write_stream(stream)
     st.session_state.messages.append({"role": "assistant", "content": response})
