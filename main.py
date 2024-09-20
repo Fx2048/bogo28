@@ -1,23 +1,14 @@
 import streamlit as st
-import random
-import time
+from openai import OpenAI
 
+st.title("ChatGPT-like clone")
 
-# Streamed response emulator
-def response_generator():
-    response = random.choice(
-        [
-            "Hello there! How can I assist you today?",
-            "Hi, human! Is there anything I can help you with?",
-            "Do you need help?",
-        ]
-    )
-    for word in response.split():
-        yield word + " "
-        time.sleep(0.05)
+# Set OpenAI API key from Streamlit secrets
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
-
-st.title("Simple chat")
+# Set a default model
+if "openai_model" not in st.session_state:
+    st.session_state["openai_model"] = "gpt-3.5-turbo"
 
 # Initialize chat history
 if "messages" not in st.session_state:
@@ -35,9 +26,3 @@ if prompt := st.chat_input("What is up?"):
     # Display user message in chat message container
     with st.chat_message("user"):
         st.markdown(prompt)
-
-    # Display assistant response in chat message container
-    with st.chat_message("assistant"):
-        response = st.write_stream(response_generator())
-    # Add assistant response to chat history
-    st.session_state.messages.append({"role": "assistant", "content": response})
