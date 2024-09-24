@@ -6,7 +6,7 @@ import streamlit as st
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 # Agregar la imagen al inicio
-st.image("https://github.com/Fx2048/bogo28/blob/main/Imagenes/bogologo.jpg", caption="bogo28 - Tu Asistente Virtual", use_column_width=True)  # Asegúrate de que la imagen esté en la misma carpeta
+st.image("Imagenes/bogologo.jpg", caption="bogo28 - Tu Asistente Virtual", use_column_width=True)  # Asegúrate de que la imagen esté en la misma carpeta
 
 st.title("bogo28 - Chatbot")
 
