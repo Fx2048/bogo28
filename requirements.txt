@@ -1,2 +1,2 @@
-groqcloud
+groq
 streamlit
