@@ -1,33 +1,36 @@
-from openai import OpenAI
+import groqcloud as gc  # Asumiendo que la librería se llama groqcloud
 import streamlit as st
 
-st.title("ChatGPT-like clone")
+st.title("The BotGot28")
 
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+# Asumimos que la API key de GroqCloud se almacena en las configuraciones de Streamlit
+client = gc.Client(api_key=st.secrets["GROQCLOUD_API_KEY"])  # Cambiar a la clave de GroqCloud
 
-if "openai_model" not in st.session_state:
-    st.session_state["openai_model"] = "gpt-3.5-turbo"
+if "groqcloud_model" not in st.session_state:
+    st.session_state["groqcloud_model"] = "gpt-3.5-turbo"  # O el modelo equivalente en GroqCloud
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+# Mostrar los mensajes anteriores
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
+# Capturar nuevo input del usuario
 if prompt := st.chat_input("What is up?"):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
+    # Respuesta del asistente a través de GroqCloud API
     with st.chat_message("assistant"):
         stream = client.chat.completions.create(
-            model=st.session_state["openai_model"],
-            messages=[
-                {"role": m["role"], "content": m["content"]}
-                for m in st.session_state.messages
-            ],
+            model=st.session_state["groqcloud_model"],  # Usar el modelo de GroqCloud
+            messages=[{"role": m["role"], "content": m["content"]} for m in st.session_state.messages],
             stream=True,
         )
         response = st.write_stream(stream)
+
+    # Agregar respuesta del asistente al historial de mensajes
     st.session_state.messages.append({"role": "assistant", "content": response})
