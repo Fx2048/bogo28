@@ -3,9 +3,10 @@ from groq import Groq
 import streamlit as st
 
 # Configurar el cliente de GroqCloud con la API Key
-client = Groq(
-    api_key=os.environ.get("GROQ_API_KEY"),  # Asegúrate de definir GROQ_API_KEY en las variables de entorno
-)
+client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
+
+# Agregar la imagen al inicio
+st.image("chatbot_image.png", caption="bogo28 - Tu Asistente Virtual", use_column_width=True)  # Asegúrate de que la imagen esté en la misma carpeta
 
 st.title("bogo28 - Chatbot")
 
@@ -39,3 +40,4 @@ if prompt := st.chat_input("What is up?"):
 
     # Agregar respuesta del asistente al historial de mensajes
     st.session_state.messages.append({"role": "assistant", "content": response})
+
