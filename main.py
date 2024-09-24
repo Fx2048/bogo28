@@ -1,7 +1,7 @@
 import groqcloud as gc  # Asumiendo que la librería se llama groqcloud
 import streamlit as st
 
-st.title("The BotGot28")
+st.title("The BoGo28")
 
 # Asumimos que la API key de GroqCloud se almacena en las configuraciones de Streamlit
 client = gc.Client(api_key=st.secrets["GROQCLOUD_API_KEY"])  # Cambiar a la clave de GroqCloud
